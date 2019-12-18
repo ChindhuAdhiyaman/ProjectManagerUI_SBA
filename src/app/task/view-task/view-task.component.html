@@ -1,43 +1,57 @@
 <div class="user-container">
-  <h2 style="margin: auto"> View Task's</h2>
-   <form [formGroup]="viewForm">
-    <div class="row">
+
+  <br>
+  <form [formGroup]="viewForm">
+
+    <div class="modal fade" id="projectsearch" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <input list="projectName" name="projectName" [(ngModel)]="searchText" formControlName="projectName">
+            <datalist id="projectName">
+              <option *ngFor="let task of tasks">
+                {{task.projectName}}
+              </option>
+            </datalist>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-group row">
+
       <div class="col-md-4">
-        <label for="taskName">Task Name:</label>
-        <input type="text" formControlName="taskName" placeholder="Task Name" name="taskName" class="form-control"
-          id="taskName" [(ngModel)]="searchText"  autocomplete="off" >
+        <input type="text" formControlName="projectName" placeholder="Project Name" name="projectName"
+          class="form-control" id="search" [(ngModel)]="searchText" autocomplete="off">
       </div>
-      <div class="col-md-6">
-        <label for="parentTaskName">Parent Task Name:</label>
-        <input type="text" formControlName="parentTaskName" placeholder="Parent Task Name" name="parentTaskName"
-          class="form-control" id="parentTaskName" [(ngModel)]="searchText"  autocomplete="off">
-      </div>
-    </div><br />
-    <div class="row">
-      <div class="col-md-2">
-        <label for="priorityFrom">Priority From:</label>
-        <input type="text" formControlName="priority" placeholder="priority From" name="priorityFrom"
-          class="form-control" id="priorityFrom" [(ngModel)]="searchText"  autocomplete="off">
-      </div>
-      <div class="col-md-2">
-        <label for="priorityTo">Priority To:</label>
-        <input type="text" formControlName="priority" placeholder="priority To" name="priorityTo" class="form-control"
-          id="priorityTo" [(ngModel)]="searchText"  autocomplete="off">
-      </div>
-      <div class="col-sm-3">
-        <label for="startDate">Start Date:</label>
-        <input type="date" formControlName="startDate" placeholder="Start Date" name="startDate" class="form-control"
-          id="startDate" [(ngModel)]="searchText"  autocomplete="off">
+      <div class="col-md-1">
+        <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#projectsearch">Search</a>
+
       </div>
 
-      <div class="col-sm-3">
-        <label for="endDate">End Date:</label>
-        <input type="date" formControlName="endDate" placeholder="End Date" name="endDate" class="form-control"
-          id="endDate" [(ngModel)]="searchText"  autocomplete="off">
+      <div class="col-md-1">
+        <label class="control-label col col-sm-3" for="Sort">Sort Task By:</label>
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-info btn-sm" (click)="sortByStartDate()" style="margin-right: 40px;">
+          StartDate</button>
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-info btn-sm" (click)="sortByEndDate()" style="margin-right: 40px;">
+          EndDate</button>
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-info btn-sm" (click)="sortByPriority()" style="margin-right: 40px;">
+          Priority</button>
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-info btn-sm" (click)="sortByStatus()" style="margin-right: 40px;">
+          Completed</button>
       </div>
 
     </div>
-
+    <br>
     <table border="1" class="table table-striped">
       <thead>
         <tr>
@@ -50,20 +64,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of tasks | filter:searchText">
-            <!-- <tr ng-repeat="task in tasks | filter:search">  -->
-          <!-- <td class="form-row"></td>  -->
 
-          <td> <textarea rows="2" >{{task.taskName}}</textarea></td>
+        <tr *ngFor="let task of tasks | filter:searchText">
+          <td> <textarea rows="2">{{task.taskName}}</textarea></td>
           <td><textarea rows="2">{{task.parentTaskName}}</textarea> </td>
           <td> <output>{{task.priority}}</output></td>
           <td> <output>{{task.startDate}}</output></td>
           <td><output>{{task.endDate}}</output></td>
           <td>
-
-
-            <button class="btn btn-success" (click)="editTask(task)"[disabled]="isOld(task.endDate)" style="margin-left: 20px;"> Edit</button>
-            <button class="btn btn-success" (click)="endTask(task)" [disabled]="isOld(task.endDate)"> End Task</button>
+            <button type="submit" class="btn btn-info btn-sm" (click)="editTask(task)" [disabled]="isOld(task.endDate)"
+              style="margin-left: 20px;"> Edit</button>
+            <button type="submit" class="btn btn-info btn-sm" (click)="endTask(task)" [disabled]="isOld(task.endDate)">
+              End Task</button>
           </td>
         </tr>
       </tbody>

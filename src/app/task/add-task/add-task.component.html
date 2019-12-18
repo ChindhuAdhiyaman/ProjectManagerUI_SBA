@@ -1,31 +1,136 @@
-<div class="col-md-6 user-container">
-    <h2>Add Task</h2>
-    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="taskName">Task Name:</label>
-        <input type="text" formControlName="taskName" placeholder="Task Name" name="taskName" class="form-control" id="taskName">
+<div class="container">
+  <br>
+  <form>
+
+    <div class="modal fade" id="projectsearch" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div [formGroup]="addForm">
+              <input list="projectName" name="projectName" [(ngModel)]="tsk.projectName" formControlName="projectName">
+              <datalist id="projectName">
+                <option *ngFor="let task of tasks ">
+                  {{task.projectName}}
+                </option>
+              </datalist>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal fade" id="pTasksearch" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div [formGroup]="addForm">
+              <input list="parentTaskName" name="parentTaskName" [(ngModel)]="tsk.parentTaskName"
+                formControlName="parentTaskName">
+              <datalist id="parentTaskName">
+                <option *ngFor="let task of tasks ">
+                  {{task.parentTask}}
+                </option>
+              </datalist>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="usersearch" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div [formGroup]="addForm">
+              <input list="employeeId" name="employeeId" [(ngModel)]="tsk.employeeId" formControlName="employeeId">
+              <datalist id="employeeId">
+                <option *ngFor="let usr of users ">
+                  {{usr.employeeId}}
+                </option>
+              </datalist>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row" [formGroup]="addForm">
+
+      <label class="control-label col col-sm-2">Project:</label>
+
+      <div class="col col-sm-4">
+        <input type="text" formControlName="projectName" name="projectName" class="form-control" id="projectName"
+          [(ngModel)]="tsk.projectName" autocomplete="off">
+      </div>
+      <div class="col-md-1">
+        <button [disabled]="checked" class="btn btn-default btn-rounded mb-4" data-toggle="modal"
+          data-target="#projectsearch">Search</button>
+
       </div>
 
-      <div class="form-group">
-        <label for="parentTaskName">Parent Task Name:</label>
-        <input type="text" formControlName="parentTaskName" placeholder="Parent Task Name" name="parentTaskName" class="form-control" id="parentTaskName">
+    </div>
+    <div class="form-group row">
+      <label class="control-label col col-sm-2">Task:</label>
+      <div class="col col-sm-4">
+        <input type="text" class="form-control" [(ngModel)]="tsk.taskName" name="task" />
+      </div>
+    </div>
+    <div class="form-group row">
+
+      <label>
+        <input type="checkbox" [(ngModel)]="checked" name="tskchk" />Parent Task</label>
+
+
+    </div>
+    <div class="form-group row">
+      <label class="control-label col col-sm-2">Priority:</label>
+      <div class="col col-sm-4 range">
+        <input type="range" min="0" max="30" class="form-control-range" [(ngModel)]="tsk.priority" name="priority"
+          onchange="range.value=value" [disabled]="checked" />
+        <output id="range">0</output>
       </div>
 
-      <div class="form-group">
-        <label for="priority">Priority:</label>
-        <ng5-slider [(value)]="value" formControlName="priority" name="priority" [options]="options" id="priority"></ng5-slider>
+    </div>
+    <div class="form-group row">
+      <label class="control-label col col-sm-2">Parent Task:</label>
+      <div class="col col-sm-4">
+        <input type="text" class="form-control" [(ngModel)]="tsk.parentTaskName" name="parentTaskName"
+          [disabled]="checked" />
       </div>
+      <div class="col-md-1">
+        <button class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#pTasksearch"
+          [disabled]="checked">Search</button>
 
-      <div class="form-group">
-        <label for="startDate">Start Date:</label>
-        <input type="date" formControlName="startDate" placeholder="Start Date" name="startDate" class="form-control" id="startDate">
       </div>
+    </div>
+    <div class="form-group row">
+      <label class="control-label col col-sm-2">Start Date:</label>
+      <div class="col col-sm-3">
+        <input type="date" class="form-control" [(ngModel)]="tsk.startDate" name="sdate" [disabled]="checked" />
+      </div>
+      <label class="control-label col col-sm-2">End Date:</label>
+      <div class="col col-sm-3">
+        <input type="date" class="form-control" [(ngModel)]="tsk.endDate" name="edate" [disabled]="checked" />
+      </div>
+    </div>
 
-      <div class="form-group">
-        <label for="endDate">End Date:</label>
-        <input type="date" formControlName="endDate" placeholder="End Date" name="endDate" class="form-control" id="endDate">
+    <div class="form-group row">
+      <label class="control-label col col-sm-2">User:</label>
+      <div class="col col-sm-4">
+        <input type="text" class="form-control" [(ngModel)]="tsk.employeeId" name="empid" [disabled]="checked" />
       </div>
-      <button class="btn btn-success">Add</button>
-      <button class="btn btn-success" type="reset">Reset</button>
-    </form>
-  </div>
+      <div class="col-md-1">
+        <button class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#usersearch"
+          [disabled]="checked">Search</button>
+
+      </div>
+    </div>
+
+    <button type="submit " class="btn btn-info pull-right " (click)="addTask() ">{{actbtn}}</button>
+    <button type="submit " class="btn pull-right " (click)="tskreset() ">Reset</button>
+  </form>
+  <br>
+  <h4>{{ sucessmsg }}</h4>
+</div>

@@ -3,7 +3,10 @@ import {Router} from "@angular/router";
 import { FormGroup, FormControl, Validators, FormBuilder }  from '@angular/forms';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import {ApiService} from "../../service/api.service";
+import {ApiResponse} from "../../model/api.response";
 import { Options } from 'ng5-slider';
+import { Task } from 'src/app/model/task.model';
+import { Usersio } from 'src/app/model/user.model';
 
 @Component({
   selector: 'app-add-task',
@@ -12,38 +15,72 @@ import { Options } from 'ng5-slider';
 })
 export class AddTaskComponent implements OnInit {
   title = 'task-manager';
-  value: number = 0;
-  options: Options = {
-    floor: 0,
-    ceil: 30
-  };
-  constructor(private formBuilder: FormBuilder,private router: Router, private apiService: ApiService) { }
+  sucessmsg = '';
+  actbtn = 'Add';
+  checked = false;
 
+  usr: Usersio = new Usersio();
+  users: ApiResponse;
+
+
+  tsk: Task = new Task();
+  tasks: ApiResponse;
+  ti: Task[];
+  
+  
+  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService) {
+    this.apiService.getTasks()
+      .subscribe(fdata => {
+        this.tasks = fdata;
+
+
+      });
+
+    this.apiService.getAllUsers().subscribe(udata => {
+      this.users = udata;
+    })
+
+  }
   addForm: FormGroup;
 
   ngOnInit() {
     this.addForm = this.formBuilder.group({
+      projectName: ['', Validators.required],
       taskName: ['', Validators.required],
       parentTaskName: ['', Validators.required],
       priority: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
+      endDate: ['', Validators.required],
+      employeeId:['', Validators.required]
     });
 
     return;
 
   }
 
-  onSubmit() {
-    console.log('Inside submit - task Name = '+this.addForm.controls.taskName.value
-    + ", Parent Task Name = "+this.addForm.controls.parentTaskName.value
-    + ", Priority = "+this.addForm.controls.priority.value
-    + ", Start Date = "+this.addForm.controls.startDate.value
-    + ", End Date = " +this.addForm.controls.endDate.value);
-    this.apiService.createTask(this.addForm.value)
-      .subscribe( data => {
-        this.router.navigate(['view-task']);
+  addTask() {
+    console.log(this.checked);
+    if(this.checked === false){
+    this.apiService.createTask(this.tsk)
+      .subscribe(msg => {
+   
+        this.sucessmsg = 'New Task : ' + this.tsk.taskName + ' got inserted successfully ';
       });
+     }
+     else{
+      this.apiService.createPTask(this.tsk)
+      .subscribe(msg => {
+ 
+        this.sucessmsg = 'Parent Task got inserted successfully';
+      });
+    }
+  }
+
+  tskreset() {
+    this.sucessmsg = '';
+    this.actbtn = 'Add';
+    this.tsk = new Task();  
+    this.checked = false;
   }
   
 }

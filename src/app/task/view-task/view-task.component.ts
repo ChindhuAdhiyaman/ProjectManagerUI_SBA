@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { Options } from 'ng5-slider';
 import { tick } from '@angular/core/testing';
 
+
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -39,6 +40,7 @@ export class ViewTaskComponent implements OnInit {
   ngOnInit() {
 
       this.viewForm = this.formBuilder.group({
+        projectName: ['', Validators.required],
         taskName: ['', Validators.required],
         parentTaskName: ['', Validators.required],
         priority: ['', Validators.required],
@@ -55,6 +57,39 @@ export class ViewTaskComponent implements OnInit {
       return true;
     }
   }
+
+  sortByStartDate(){
+    this.apiService.sortTaskByStartDate()
+    .subscribe( fdata => {
+      this.tasks = fdata;
+    
+    });
+  }
+
+  sortByEndDate(){
+    this.apiService.sortTaskByEndDate()
+    .subscribe( fdata => {
+      this.tasks = fdata;
+    
+    });
+  }
+
+  sortByPriority(){
+    this.apiService.sortTaskByPriority()
+    .subscribe( fdata => {
+      this.tasks = fdata;
+    
+    });
+  }
+
+  sortByStatus(){
+    this.apiService.sortTaskByStatus()
+    .subscribe( fdata => {
+      this.tasks = fdata;
+    
+    });
+  }
+
 
   editTask(task: Task): void {
    

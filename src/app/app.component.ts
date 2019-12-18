@@ -10,7 +10,7 @@ import { FormGroup, FormControl, Validators, FormBuilder,
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'task-manager';
+  title = 'project-manager';
   constructor(private formBuilder: FormBuilder,private router: Router) { }
   ngOnInit() {
   }
@@ -22,4 +22,11 @@ export class AppComponent {
   viewTask(): void {
     this.router.navigate(['view-task']);
   };
+
+  addProject():void {
+this.router.navigate(['add-project']);
+  };
+  addUser():void {
+    this.router.navigate(['add-user']);
+      };
 }

@@ -11,11 +11,15 @@ import { CommonModule } from '@angular/common';
 import { AddTaskComponent } from './task/add-task/add-task.component';
 import { ViewTaskComponent } from './task/view-task/view-task.component';
 import { EditTaskComponent } from './task/edit-task/edit-task.component';
+import { ProjectComponent } from './task/project/project.component';
+import {UsersComponent} from './task/users/users.component';
 
 const routes: Routes = [
   { path: 'add-task', component: AddTaskComponent },
   { path: 'view-task', component: ViewTaskComponent },
   { path: 'edit-task', component: EditTaskComponent },
+  { path: 'add-project', component: ProjectComponent },
+  {path:'add-user',component:UsersComponent},
 ];
 
 describe('AppComponent', () => {
@@ -35,7 +39,9 @@ describe('AppComponent', () => {
         AppComponent,
         AddTaskComponent,
         ViewTaskComponent,
-        EditTaskComponent
+        EditTaskComponent,
+        ProjectComponent,
+        UsersComponent
       ],
     }).compileComponents();
   }));
@@ -46,10 +52,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'task-manager'`, () => {
+  it(`should have as title 'project-manager'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('task-manager');
+    expect(app.title).toEqual('project-manager');
   });
 
   it('should render title', () => {

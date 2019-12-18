@@ -6,6 +6,8 @@ export class Task {
   priority: number;
   startDate: Date;
   endDate: Date;
+  projectId: number;
+  status: string;
 
   constructor(values: object = { }) {
 
